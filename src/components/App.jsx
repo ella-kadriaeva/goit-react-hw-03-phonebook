@@ -15,6 +15,18 @@ export default class App extends Component {
     filter: '',
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parseContacts = JSON.parse(contacts);
+    if (parseContacts) {
+      this.setState({ contacts: parseContacts });
+    }
+  }
   formSubmitHandle = data => {
     const sameName = this.state.contacts
       .map(contact => contact.name)
@@ -23,8 +35,8 @@ export default class App extends Component {
       alert(`${data.name} is already in contacts`);
     } else {
       const contact = {
-        ...data,
         id: nanoid(),
+        ...data,
       };
       this.setState(prevState => ({
         contacts: [contact, ...prevState.contacts],
