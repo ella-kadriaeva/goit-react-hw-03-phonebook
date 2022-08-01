@@ -16,12 +16,9 @@ export default class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
     if (this.state.contacts !== prevState.contacts) {
-      window.localStorage.setItem(
-        'contacts',
-        JSON.stringify(this.state.contacts)
-      );
-      console.log('обнова');
+      localStorage.setItem('contacts', JSON.stringify(contacts));
     }
   }
   componentDidMount() {
